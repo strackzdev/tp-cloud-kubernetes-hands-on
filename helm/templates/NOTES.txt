@@ -1,0 +1,18 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+To get the application URL, run these commands:
+{{- if contains "ClusterIP" .Values.service.type }}
+  kubectl port-forward -n {{ .Values.namespace }} svc/nginx-service 8080:{{ .Values.service.port }}
+  Visit http://localhost:8080 to access your application
+{{- else if contains "NodePort" .Values.service.type }}
+  export NODE_PORT=$(kubectl get -n {{ .Values.namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services nginx-service)
+  export NODE_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo http://$NODE_IP:$NODE_PORT
+{{- else if contains "LoadBalancer" .Values.service.type }}
+  NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+        You can watch the status by running 'kubectl get -n {{ .Values.namespace }} svc -w nginx-service'
+  export SERVICE_IP=$(kubectl get svc -n {{ .Values.namespace }} nginx-service -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+  echo http://$SERVICE_IP:{{ .Values.service.port }}
+{{- end }}

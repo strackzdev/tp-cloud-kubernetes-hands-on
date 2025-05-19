@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+  namespace: {{ .Values.namespace }}
+data:
+  CUST_NGINX_PORT: {{ .Values.configMap.nginxPort | quote }}
+  CUST_NGINX_WORKER_PROCESSES: {{ .Values.configMap.nginxWorkerProcesses | quote }}
