@@ -26,6 +26,12 @@ cd helm
 helm upgrade --install tp-cloud-kubernetes-hands-on .
 ```
 
+**Expose the ingress with minikube**
+```shell
+echo "$(minikube ip) kubernetes.host" | sudo tee -a /etc/hosts
+minikube addons enable ingress
+```
+
 ## Cleanup
 
 **Basic Kubernetes Deployment**
